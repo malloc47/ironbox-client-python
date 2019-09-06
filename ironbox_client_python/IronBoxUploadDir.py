@@ -1,14 +1,21 @@
 #!/usr/bin/python
 #---------------------------------------------------
 #   
-#   Demonstrates how to upload a file to 
-#   an IronBox secure package or container
+#   Demonstrates how to upload a directory to 
+#   an IronBox secure package or container. Note 
+#   this script does not recurse into subdirectories
 #
 #   Written by KevinLam@goironbox.com 
 #   Website: www.goironbox.com
 #
+#   Usage:
+#	python IronBoxUploadDir.py dir_to_upload
+#
 #---------------------------------------------------
-from IronBoxREST import IronBoxRESTClient 
+import sys
+from os import listdir
+from os.path import isfile, join
+from ironbox_client_python.IronBoxREST import IronBoxRESTClient
 
 #---------------------------------------------------
 # Your IronBox authentication parameters, you could
@@ -16,11 +23,14 @@ from IronBoxREST import IronBoxRESTClient
 #---------------------------------------------------
 ContainerID = 100777	
 IronBoxEmail = "email@email.com"
-IronBoxPassword = "password123"
+IronBoxPassword = "password"
 IronBoxAPIServerURL = "https://api.goironcloud.com/latest/"
 IronBoxAPIVersion = "latest"
-InFile = "test.txt"
-IronBoxFileName = "testFileOnIronBox.txt"
+
+# The directory to upload is the 1st command line 
+# argument, or hardcode the directory you want to upload
+#InDir = "source_dir"
+InDir = sys.argv[1]
 
 #---------------------------------------------------
 # Main
@@ -33,13 +43,17 @@ def main():
     IronBoxRESTObj = IronBoxRESTClient(IronBoxEmail, IronBoxPassword, version=IronBoxAPIVersion, verbose=True)
 
     #----------------------------
-    #	Upload the file to IronBox
-    #	Duplicate file names will automatically
-    #	get renamed
+    # Get all the files in the target directory
     #----------------------------
-    IronBoxRESTObj.UploadFileToContainer(ContainerID, InFile, IronBoxFileName)
+    dirFiles = [f for f in listdir(InDir) if isfile(join(InDir,f)) ]
+    
+    #----------------------------
+    # Iterate the dirFiles array and upload each file
+    #----------------------------
+    for fileName in dirFiles:  
+	currentFilePath = join(InDir,fileName)	
+	IronBoxRESTObj.UploadFileToContainer(ContainerID, currentFilePath, fileName)
 
 #---------------------------------------------------
-import string, datetime
 if __name__ == "__main__":
     main()
