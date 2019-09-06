@@ -49,6 +49,7 @@ import sys
 import requests
 from Crypto.Cipher import AES
 import json
+import base64
 
 class IronBoxRESTClient():
 
@@ -330,7 +331,7 @@ class IronBoxRESTClient():
     def console_log(self, m):
 	if self.Verbose is True:
 	    now = datetime.datetime.now()
-	    print str(now) + ": " + m
+	    print(str(now) + ": " + m)
 
     #*************************************************************
     #	CORE REST API FUNCTIONS 
@@ -381,8 +382,8 @@ class IronBoxRESTClient():
         session_key_base_64 = response.get('SessionKeyBase64', None)
         if not session_key_base_64:
             return None
-        ContainerKeyData.SymmetricKey = session_key_base_64.decode('base64', 'strict')
-        ContainerKeyData.IV = response.get('SessionIVBase64').decode('base64', 'strict')
+        ContainerKeyData.SymmetricKey = base64.b64decode(session_key_base_64, validate=True)
+        ContainerKeyData.IV = base64.b64decode(response.get('SessionIVBase64'), validate=True)
         ContainerKeyData.KeyStrength =  response.get('SymmetricKeyStrength')
 
         return ContainerKeyData
@@ -802,7 +803,7 @@ class IronBoxKeyData():
 			outfile.write(e.encrypt(buf))
 	    return True
 
-	except Exception, e:
+	except Exception:
 	    return False
 
     #-------------------------------------------------------------
@@ -825,7 +826,7 @@ class IronBoxKeyData():
 			    decrypted = unpad(decrypted)
 			outfile.write(decrypted) 
 	    return True
-	except Exception, e:
+	except Exception:
 	    return False
 
 #------------------------------------------------------------------
@@ -841,12 +842,12 @@ class IronBoxBlobCheckOutData():
     ContainerStorageName = ""
 
     def DebugPrintProps(self):
-	print "SharedAccessSignature: %s" % self.SharedAccessSignature
-	print "SharedAccessSignatureUri: %s" % self.SharedAccessSignatureUri
-	print "CheckInToken: %s" % self.CheckInToken 
-	print "StorageUri: %s" % self.StorageUri 
-	print "StorageType: %d" % self.StorageType 
-	print "ContainerStorageName: %s" % self.ContainerStorageName 
+	print("SharedAccessSignature: %s" % self.SharedAccessSignature)
+	print("SharedAccessSignatureUri: %s" % self.SharedAccessSignatureUri)
+	print("CheckInToken: %s" % self.CheckInToken) 
+	print("StorageUri: %s" % self.StorageUri) 
+	print("StorageType: %d" % self.StorageType) 
+	print("ContainerStorageName: %s" % self.ContainerStorageName) 
 
 
 #------------------------------------------------------------------
@@ -861,11 +862,11 @@ class IronBoxBlobReadData():
     StorageUri = ""
 
     def DebugPrintProps(self):
-	print "ContainerStorageName: %s" % self.ContainerStorageName
-	print "SharedAccessSignature: %s" % self.SharedAccessSignature
-	print "SharedAccessSignatureUri: %s" % self.SharedAccessSignatureUri
-	print "StorageType: %s" % self.StorageType
-	print "StorageUri: %s" % self.StorageUri
+	print("ContainerStorageName: %s" % self.ContainerStorageName)
+	print("SharedAccessSignature: %s" % self.SharedAccessSignature)
+	print("SharedAccessSignatureUri: %s" % self.SharedAccessSignatureUri)
+	print("StorageType: %s" % self.StorageType)
+	print("StorageUri: %s" % self.StorageUri)
 
 #------------------------------------------------------------------
 #   Class to hold IronBox entity SFT container information
@@ -878,7 +879,7 @@ class IronBoxSFTContainerConfig():
     FriendlyID = ""
 
     def DebugPrintProps(self):
-	print "Name: %s" % self.Name
-	print "Description: %s" % self.Description
-	print "ContainerID: %d" % self.ContainerID
-	print "FriendlyID: %s" % self.FriendlyID
+	print("Name: %s" % self.Name)
+	print("Description: %s" % self.Description)
+	print("ContainerID: %d" % self.ContainerID)
+	print("FriendlyID: %s" % self.FriendlyID)
