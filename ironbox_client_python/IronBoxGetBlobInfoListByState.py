@@ -12,10 +12,7 @@
 #	python IronBoxGetBlobInfoListByState.py
 #
 #---------------------------------------------------
-import sys
-from os import listdir
-from os.path import isfile, join
-from IronBoxREST import IronBoxRESTClient 
+from ironbox_client_python.IronBoxREST import IronBoxRESTClient
 
 #---------------------------------------------------
 # Your IronBox authentication parameters, you could

@@ -11,8 +11,7 @@
 #	python IronBoxDownloadReadyFiles.py
 #
 #---------------------------------------------------
-import sys
-from IronBoxREST import IronBoxRESTClient 
+from ironbox_client_python.IronBoxREST import IronBoxRESTClient
 from os.path import join 
 
 #---------------------------------------------------

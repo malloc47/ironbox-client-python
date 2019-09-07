@@ -8,8 +8,8 @@
 #   Website: www.goironbox.com
 #
 #---------------------------------------------------
-from IronBoxREST import IronBoxRESTClient 
-from IronBoxREST import IronBoxSFTContainerConfig
+from ironbox_client_python.IronBoxREST import IronBoxRESTClient
+from ironbox_client_python.IronBoxREST import IronBoxSFTContainerConfig
 
 #---------------------------------------------------
 # Your IronBox authentication parameters, you could
@@ -57,6 +57,5 @@ def main():
     print("New container was successfully removed")
 
 #---------------------------------------------------
-import string, datetime
 if __name__ == "__main__":
     main()
